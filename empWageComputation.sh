@@ -9,7 +9,12 @@ empRatePerHr=20
 empFullTimeHrs=8
 empPartTimeHrs=4
 numberOfWorkingDays=20
+maxHrsInMonth=100
+
+#variables
 totalSalary=0
+totalEmpHr=0
+totalWorkingDays=0
 
 #it will give 0 or 1 by using random
 attendance_check=$(( RANDOM%2 ))
@@ -29,8 +34,9 @@ fi
 #employee wage using case statement
 #calculating wages for a month
 
-for (( i=1; i<=numberOfWorkingDays; i++ ))
+while [[ $totalEmpHr -lt $maxHrsInMonth && $totalWorkingDays -lt $numberOfWorkingDays ]]
 do
+	(( totalWorkingDays++ ))
 	empCheck=$(( RANDOM%3 + 1 ))
 	case $empCheck in
 		1)
@@ -44,15 +50,12 @@ do
 		;;
 	esac
 
-	#calculate employee wage
-	employeeWage=$(( $empHrs * $empRatePerHr ))
-
-	#calculate wages per month
-	totalSalary=$(( $totalSalary + $employeeWage ))
-
+	totalEmpHr=$(( $totalEmpHr + $empHrs ))
 done
+	#calculate wages per month
+	totalSalary=$(( $totalEmpHr * $empRatePerHr ))
+
 
 echo "salary of an employee:" $salary
 echo "part time salary of an employee:" $halfSalary
-echo "Employee Wage:" $employeeWage
-echo "Salary per month:" $totalSalary
+echo "Calculated wages of total hours or days for a month :" $totalSalary
