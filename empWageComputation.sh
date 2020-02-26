@@ -30,14 +30,20 @@ function getWorkingHours() {
 	echo $empHrs
 }
 
+function calculateDailyWage() {
+	local workHours=$1
+	wages=$(( $workHours * $empRatePerHr ))
+	echo $wages
+}
+
 while [[ $totalEmpHr -lt $maxHrsInMonth && $totalWorkingDays -lt $numberOfWorkingDays ]]
 do
 	(( totalWorkingDays++ ))
 	workingHours="$( getWorkingHours )"
 	totalWorkHrs=$(( $totalEmpHr + $workingHours ))
+	empDailyWage[$totalWorkingDays]="$( calculateDailyWage $workingHours )"
 done
 	echo $totalWorkHrs
 	#calculate wages per month
-	totalSalary=$(( $totalWorkHrs * $empRatePerHr ))
-
-echo "Calculated wages of total hours or number of days is reached for a month :" $totalSalary
+	totalSalary="$( calculateDailyWage $totalWorkHrs )"
+	echo "Daily wage  ${empDailyWage[@]}"
